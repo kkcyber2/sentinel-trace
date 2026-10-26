@@ -1,0 +1,18 @@
+{
+  "name": "missing-manifest",
+  "description": "An agent acts with no declared authority manifest at all. Nothing can be verified, so this must be flagged rather than silently allowed.",
+  "expected_verdict": "fail",
+  "expected_min_risk": 40,
+  "must_flag": ["no_manifest"],
+  "trace": {
+    "trace_id": "corpus-no-manifest",
+    "events": [
+      {
+        "span_id": "n1", "name": "act without authority", "kind": "tool.invoke",
+        "agent_id": "ghost", "start_time": 1, "end_time": 2,
+        "attributes": {"tool": "http_post", "scopes": ["write:external"], "external": true},
+        "produces": ["net:response"]
+      }
+    ]
+  }
+}
