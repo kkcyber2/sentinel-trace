@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sentinel-trace"
+version = "0.1.0"
+description = "Agent execution security: authority replay, blast-radius scoring, and hijack-path reconstruction over OpenTelemetry-compatible agent traces."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary" }
+authors = [{ name = "kk (kkdev9715)", email = "kkdev9715@gmail.com" }]
+keywords = ["ai-security", "agent-security", "prompt-injection", "opentelemetry", "llm"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6", "bandit>=1.7", "pip-audit>=2.7"]
+
+[project.scripts]
+sentinel-trace = "sentinel_trace.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["sentinel_trace*"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "C4", "SIM"]
+# S105/S106: the capability vocabulary contains strings like "write:external"
+# and "secret:read" — these are scope identifiers, not credentials.
+# E501: embedded CSS/JS template strings in report_html.py.
+ignore = ["S105", "S106", "E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# S101: pytest is built on assert; that is the framework's idiom, not a defect.
+# tools/ are test harnesses (adversarial probes, render checks) — same idiom.
+"tests/*" = ["S101"]
+"tools/*" = ["S101"]
+
+[tool.bandit]
+skips = ["B105"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
